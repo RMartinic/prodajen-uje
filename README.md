@@ -1,38 +1,72 @@
-# prodajen-uje
-**Prodajen Uje** is a web platform built with **Next.js** that connects small olive oil producers with customers who value authentic, locally made olive oil.  
-Customers can browse, search, and filter products by location, olive tree type, harvest year, and more.  
-Small sellers can register, log in, and advertise or sell their own olive oil directly through the app.
+# Semester Project
+
 
 ---
 
-## Features
-
-### For Customers
-- **Advanced Search and Filtering**
-  - Filter by location, olive variety, harvest year, and price range
-- **Detailed Product Pages**
-  - View oil characteristics, producer information, and customer reviews
-- **Favorites**
-  - Save products for later viewing
-- **Contact Seller**
-  - Send inquiries directly to producers
-
-### For Sellers
-- **Authentication**
-  - Register and log in securely
-- **Seller Dashboard**
-  - Add, edit, and manage olive oil listings
-- **Sales Management**
-  - View sales statistics and customer inquiries
-- **Product Uploads**
-  - Upload images and details for each batch or product
+- [Semester Project](#semester-project)
+- [Project Structure](#project-structure)
+- [My Project Links](#my-project-links)
+- [Semester Assignments](#semester-assignments)
+- [Project Requirements](#project-requirements)
+- [Web Application Requirements](#web-application-requirements)
+- [Project Demonstration](#project-demonstration)
 
 ---
 
-## Tech Stack
 
-| Category | Technology |
-|-----------|-------------|
-| Frontend Framework | Next.js 14 |
-| Styling | Tailwind CSS |
-| Backend API | Next.js API Routes (or optional Express integration) |
+## Project Structure
+- **/prodajen-uje** The source code of the main project
+- **/assignments** Result of assignments
+- **/docs** Documentation
+
+---
+
+## My Project Links
+
+### 🎯 Semester Project
+- **Production Version**: [Production Version](#)  
+- **Final Report**: [Final Report](#)
+
+---
+
+## Semester Assignments
+
+- [Assignment 1](#)
+- [Assignment 2](#)
+- [Assignment 3](#)
+
+---
+
+## Project Requirements
+
+See the detailed web application feature requirements below.
+
+---
+
+## Web Application Requirements
+
+- [ ] The application can be accessed from a **web browser**
+- [ ] It is **responsive** and works on different device sizes
+- [ ] Users can **search/filter** products or services
+- [ ] Application supports **user login** to display private content
+- [ ] Includes a **blog page** with:
+- [ ] Images  
+- [ ] Videos  
+- [ ] Code snippets  
+- [ ] Content partially managed through a **remote headless CMS**
+
+---
+
+## Project Demonstration
+
+- [ ] Production version is **deployed online** via Vercel / Netlify / VPS
+- [ ] Created a **video demonstration** covering key features
+- [ ] Performed **usability evaluation**
+- [ ] Conducted **PageSpeed Insights performance analysis**
+- [ ] **Included analysis results** in the final report
+
+---
+
+## 📄 Final Notes
+
+For detailed analysis, setup instructions, or additional notes, please refer to the [Final Report](#).
