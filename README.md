@@ -23,7 +23,7 @@
 
 ## My Project Links
 
-### 🎯 Semester Project
+###  Semester Project
 - **Production Version**: [Production Version](#)  
 - **Final Report**: [Final Report](#)
 
@@ -65,6 +65,6 @@ See the detailed web application feature requirements below.
 
 ---
 
-## 📄 Final Notes
+##  Final Notes
 
 For detailed analysis, setup instructions, or additional notes, please refer to the [Final Report](#).
