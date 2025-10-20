@@ -21,3 +21,6 @@ Buyers can browse, search, and filter by location, olive variety, harvest year, 
 
 ## How Did We Think of the Idea?  
 Both team members have family-owned olive trees and produce olive oil, so this is something close to us that came up naturally during brainstorming for platform ideas.
+
+## Idea Pitch Video Link
+https://app.animaker.com/video/WVE6BLIME0IXITA2
