@@ -31,7 +31,7 @@
 
 ## Semester Assignments
 
-- [Assignment 1] [Link] (https://github.com/RMartinic/prodajen-uje/tree/main/assignments/idea-pitch)
+- Link to Assignment 1: [**Idea Pitch**](/assignments/idea-pitch/)
 
 ---
 
