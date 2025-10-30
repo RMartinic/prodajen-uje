@@ -134,7 +134,7 @@ The information architecture of Prodajen Uje was designed to make it simple for 
     - Profiles of small olive oil producers
     - Producer story, history, and production philosophy
 - **Products**
-    - Olive oil listings with filtering options (location, variety, organic certifications, harvest year)
+    - Olive oil listings with filtering options (location, variety, harvest year)
     - Short description of each product
     - Price list and available quantities
     - Product images
