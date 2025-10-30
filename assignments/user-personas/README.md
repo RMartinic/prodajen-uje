@@ -157,7 +157,7 @@ The information architecture of Prodajen Uje was designed to make it simple for 
 
 ---
 
-**LLM prompts**
+## LLM prompts
 - Here are the LLM prompts we used for this assignment: 
   - Generate a set of three realistic user personas for Prodajen Uje, a digital marketplace that connects small olive oil producers with customers who value authentic, locally made olive oil. The personas should reflect different types of users and capture their motivations, goals, and frustrations when engaging with the platform. Focus on creating believable characters that help illustrate how and why people would use Prodajen Uje from both the producer and customer perspectives.
   - Using the card sorting method, create a clear and logical Information Architecture and Sitemap for Prodajen Uje, a platform that connects small olive oil producers with customers who appreciate authentic, locally made products. Base the structure on how users would naturally group and navigate information when exploring or managing olive oil listings. The output should describe the main sections and subpages along with their relationships.
