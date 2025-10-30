@@ -32,7 +32,7 @@
 ## Semester Assignments
 
 - Link to Assignment 1: [**Idea Pitch**](/assignments/idea-pitch/)
-
+- Link to Assignment 2: [**User Personas**](/assignments/user-personas/)
 ---
 
 ## Project Requirements
