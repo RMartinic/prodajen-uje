@@ -121,3 +121,43 @@
 
 ---
 
+## Information Architecture
+
+The information architecture of Prodajen Uje was designed to make it simple for users to navigate the platform, find authentic local olive oils, and purchase products directly from small producers. The structure reflects the needs of the two main user groups: small olive oil producers and customers who value high-quality, locally produced oils.
+
+- **Home Page**
+    - Overview of Prodajen Uje and its purpose
+    - Featured producers and highlighted olive oils
+    - Quick navigation to browse products by type, location, or harvest year
+    - User testimonials and reviews of producers or oils
+- **Producers**
+    - Profiles of small olive oil producers
+    - Producer story, history, and production philosophy
+- **Products**
+    - Olive oil listings with filtering options (location, variety, organic certifications, harvest year)
+    - Short description of each product
+    - Price list and available quantities
+    - Product images
+    - Add to cart/purchase options
+- **Reviews**
+    - Customer reviews and ratings of producers and products
+- **About Us**
+    - Story behind Prodajen Uje
+    - Platform mission and vision
+    - Why us?
+- **Contact and Help**
+    - Frequently Asked Questions (FAQ)
+    - Customer support contacts
+- **Login / Account**
+    - User login for customers and producers
+    - Account creation and password reset options
+- **My Account** (Private)
+    - Personalized overview of purchased products and orders
+    - Producers can manage their listings, prices, and inventory
+
+---
+
+
+
+
+    
