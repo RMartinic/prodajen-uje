@@ -1,14 +1,14 @@
 import Image from "next/image";
 import ProductCard from "./components/productCard";
 import { products } from "./data/products";
+import Link  from "next/link";
 
 export default function Home() {
   return (
    <main className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <section className="relative w-full h-[60vh]">
         <Image
-          src="/homepagePicture.jpg" // 🖼️ replace this with your image path
+          src="/homepagePicture.jpg" 
           alt="Olive Grove"
           fill
           priority
@@ -24,7 +24,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sellers Section */}
       <section className="max-w-6xl mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold text-center text-green-800 mb-10">
           Marketplace
@@ -32,7 +31,13 @@ export default function Home() {
 
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
+            <Link
+            key={product.id}
+            href={`/product/${product.id}`}
+            className="transition-transform hover:scale-[1.02]"
+            >
+            <ProductCard {...product} />
+            </Link>
           ))}
         </div>
       </section>

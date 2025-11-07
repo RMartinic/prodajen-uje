@@ -1,8 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { ShoppingCart, Menu, X, LogInIcon } from "lucide-react"; // icons
-
+import { ShoppingCart, Menu, X, LogInIcon } from "lucide-react";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
@@ -15,7 +14,7 @@ export default function Navbar() {
         <div className="hidden md:flex space-x-8 text-gray-700 font-medium">
           <Link href="/" className="hover:text-green-600 transition">Home</Link>
           <Link href="/about" className="hover:text-green-600 transition">About</Link>
-          <Link href="/shop" className="hover:text-green-600 transition">Shop</Link>
+          <Link href="/marketplace" className="hover:text-green-600 transition">Marketplace</Link>
           <Link href="/contact" className="hover:text-green-600 transition">Contact</Link>
         </div>
 
@@ -27,10 +26,13 @@ export default function Navbar() {
       Log In
     </Link>
 
-          <button className="relative">
-            <ShoppingCart className="w-6 h-6 text-green-700" />
-            <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full px-1.5">2</span>
-          </button>
+          <Link
+          href="/cart"
+          className="flex items-center gap-1 text-gray-700 hover:text-green-600 transition"
+        >
+          <ShoppingCart className="w-5 h-5" />
+          <span>Cart</span>
+        </Link>
 
           <button className="md:hidden" onClick={() => setOpen(!open)}>
             {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
