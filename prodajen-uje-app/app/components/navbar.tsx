@@ -45,7 +45,7 @@ export default function Navbar() {
           <div className="flex flex-col px-4 py-2 space-y-2">
             <Link href="/" className="hover:text-green-600 transition" onClick={() => setOpen(false)}>Home</Link>
             <Link href="/about" className="hover:text-green-600 transition" onClick={() => setOpen(false)}>About</Link>
-            <Link href="/shop" className="hover:text-green-600 transition" onClick={() => setOpen(false)}>Shop</Link>
+            <Link href="/marketplace" className="hover:text-green-600 transition" onClick={() => setOpen(false)}>Shop</Link>
             <Link href="/contact" className="hover:text-green-600 transition" onClick={() => setOpen(false)}>Contact</Link>
           </div>
         </div>
