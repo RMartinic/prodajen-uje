@@ -21,7 +21,7 @@ export default function ProductCard({ location, image, description }: SellerProp
         <h2 className="text-xl font-semibold text-green-800">{location}</h2>
         <p className="mt-3 text-gray-700">{description}</p>
         <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-          View Shop
+          View Product
         </button>
       </div>
     </div>
