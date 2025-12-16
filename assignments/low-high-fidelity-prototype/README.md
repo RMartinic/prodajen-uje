@@ -92,4 +92,6 @@ To ensure inclusive design:
 - All elements should support smooth scroll and rendering
 
 ## DELIVERABLES
+<img src="figma-site-prodajen-uje.png" alt="Figma design">
+
 Link to figma prototype: https://text-error-51520372.figma.site/
