@@ -34,6 +34,7 @@
 - Link to Assignment 1: [**Idea Pitch**](/assignments/idea-pitch/)
 - Link to Assignment 2: [**User Personas**](/assignments/user-personas/)
 - Link to Assignment 3: [**Next.js - Deploying Application**](https://prodajen-uje.vercel.app/)
+- Link to Assignment 4: [**Next.js - Dynamic routes, data fetching**](https://prodajen-uje.vercel.app/)
 ---
 
 ## Project Requirements
