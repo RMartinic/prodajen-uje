@@ -1,14 +1,21 @@
 import Image from "next/image";
 import ProductCard from "./components/productCard";
 import { products } from "./data/products";
-import Link  from "next/link";
+import Link from "next/link";
 
 export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts?_limit=8")
+      .then((res) => res.json())
+      .then((data) => setPosts(data));
+  }, []);
   return (
-   <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gray-50">
       <section className="relative w-full h-[60vh]">
         <Image
-          src="/homepagePicture.jpg" 
+          src="/homepagePicture.jpg"
           alt="Olive Grove"
           fill
           priority
@@ -19,7 +26,8 @@ export default function Home() {
             Pure. Honest. Decentralized.
           </h1>
           <p className="text-lg md:text-xl max-w-2xl">
-            Olive oil the way nature intended — directly from local producers to your table.
+            Olive oil the way nature intended — directly from local producers to
+            your table.
           </p>
         </div>
       </section>
@@ -30,13 +38,13 @@ export default function Home() {
         </h2>
 
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
+          {posts.map((post) => (
             <Link
-            key={product.id}
-            href={`/product/${product.id}`}
-            className="transition-transform hover:scale-[1.02]"
+              key={post.id}
+              href={`/product/${post.id}`}
+              className="transition-transform hover:scale-[1.02]"
             >
-            <ProductCard {...product} />
+              <ProductCard {...post} />
             </Link>
           ))}
         </div>
