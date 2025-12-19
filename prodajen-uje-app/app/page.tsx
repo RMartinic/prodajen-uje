@@ -2,6 +2,7 @@ import Image from "next/image";
 import ProductCard from "./components/productCard";
 import { products } from "./data/products";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
