@@ -5,6 +5,7 @@ import ProductCard from "./components/productCard";
 import { products } from "./data/products";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { fetchProducts } from "./middleware/product";
 
 type Post = {
   id: number;
@@ -16,10 +17,14 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts?_limit=8")
-      .then((res) => res.json())
-      .then((data) => setPosts(data));
+    const loadPosts = async () => {
+      const data = await fetchProducts();
+      setPosts(data);
+    };
+
+    loadPosts();
   }, []);
+
   return (
     <main className="min-h-screen bg-gray-50">
       <section className="relative w-full h-[60vh]">

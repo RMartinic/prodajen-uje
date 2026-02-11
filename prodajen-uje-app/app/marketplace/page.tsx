@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductCard from "../components/productCard";
+import { fetchProducts } from "../middleware/product";
 
 type Post = {
   id: number;
@@ -12,11 +13,13 @@ type Post = {
 
 export default function Marketplace() {
   const [posts, setPosts] = useState<Post[]>([]);
-
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts?_limit=8")
-      .then((res) => res.json())
-      .then((data) => setPosts(data));
+    const loadPosts = async () => {
+      const data = await fetchProducts();
+      setPosts(data);
+    };
+
+    loadPosts();
   }, []);
 
   return (
@@ -24,8 +27,8 @@ export default function Marketplace() {
       <div className="max-w-6xl mx-auto text-center mb-12">
         <h1 className="text-4xl font-bold text-green-800 mb-2">Marketplace</h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Browse locally produced olive oils from independent growers.
-          Support sustainability and taste the difference 🌿
+          Browse locally produced olive oils from independent growers. Support
+          sustainability and taste the difference 🌿
         </p>
       </div>
 
