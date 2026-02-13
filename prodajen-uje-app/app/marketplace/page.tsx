@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductCard from "../components/productCard";
 import { fetchProducts } from "../middleware/product";
+import { supabase } from "../lib/supabaseClient";
 
 type Post = {
   id: number;
@@ -13,10 +14,17 @@ type Post = {
 
 export default function Marketplace() {
   const [posts, setPosts] = useState<Post[]>([]);
+  async function testBase() {
+    const { data, error } = await supabase.from("products").select("*");
+
+    console.log(data, error);
+  }
+
   useEffect(() => {
     const loadPosts = async () => {
       const data = await fetchProducts();
       setPosts(data);
+      //testBase();
     };
 
     loadPosts();
