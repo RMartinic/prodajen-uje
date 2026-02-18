@@ -15,8 +15,15 @@ type Post = {
 export default function Marketplace() {
   const [posts, setPosts] = useState<Post[]>([]);
   async function testBase() {
-    const { data, error } = await supabase.from("products").select("*");
-
+    const { data, error } = await supabase
+      .from("products")
+      .select(
+        `
+    id, title, price, photo, description, sort, location, created_at,
+    profiles:owner_id ( username )
+  `,
+      )
+      .order("created_at", { ascending: false });
     console.log(data, error);
   }
 
@@ -24,7 +31,7 @@ export default function Marketplace() {
     const loadPosts = async () => {
       const data = await fetchProducts();
       setPosts(data);
-      //testBase();
+      testBase();
     };
 
     loadPosts();
