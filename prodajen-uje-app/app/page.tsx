@@ -2,26 +2,18 @@
 
 import Image from "next/image";
 import ProductCard from "./components/productCard";
-import { products } from "./data/products";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { fetchProducts } from "./middleware/product";
-
-type Post = {
-  id: number;
-  title: string;
-  body: string;
-};
+import { fetchProducts, Product } from "./middleware/product";
 
 export default function Home() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Product[]>([]);
 
   useEffect(() => {
     const loadPosts = async () => {
       const data = await fetchProducts();
       setPosts(data);
     };
-
     loadPosts();
   }, []);
 
@@ -58,7 +50,7 @@ export default function Home() {
               href={`/product/${post.id}`}
               className="transition-transform hover:scale-[1.02]"
             >
-              <ProductCard {...post} />
+              <ProductCard product={post} />
             </Link>
           ))}
         </div>

@@ -3,35 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductCard from "../components/productCard";
-import { fetchProducts } from "../middleware/product";
-import { supabase } from "../lib/supabaseClient";
-
-type Post = {
-  id: number;
-  title: string;
-  body: string;
-};
+import { fetchProducts, Product } from "../middleware/product";
 
 export default function Marketplace() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  async function testBase() {
-    const { data, error } = await supabase
-      .from("products")
-      .select(
-        `
-    id, title, price, photo, description, sort, location, created_at,
-    profiles:owner_id ( username )
-  `,
-      )
-      .order("created_at", { ascending: false });
-    console.log(data, error);
-  }
+  const [posts, setPosts] = useState<Product[]>([]);
 
   useEffect(() => {
     const loadPosts = async () => {
       const data = await fetchProducts();
       setPosts(data);
-      testBase();
     };
 
     loadPosts();
@@ -54,7 +34,7 @@ export default function Marketplace() {
             href={`/product/${post.id}`}
             className="transition-transform hover:scale-[1.02]"
           >
-            <ProductCard {...post} />
+            <ProductCard product={post} />
           </Link>
         ))}
       </div>

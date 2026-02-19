@@ -3,32 +3,48 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { getPicsumId } from "../../utils/getPicsumId";
-
-type Post = {
-  id: number;
-  title: string;
-  body: string;
-};
+import { loadProduct, type Product } from "../../middleware/product";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [post, setPost] = useState<Post | null>(null);
+
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
-    fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      .then((res) => res.json())
-      .then((data) => setPost(data))
-      .finally(() => setLoading(false));
+
+    let isMounted = true;
+
+    const run = async () => {
+      setLoading(true);
+      try {
+        const data = await loadProduct(id);
+        if (isMounted) setProduct(data);
+      } catch (err) {
+        console.error(err);
+        if (isMounted) setProduct(null);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    run();
+
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   if (loading) return <p className="p-8">Loading...</p>;
-  if (!post) return <p className="p-8">Product not found</p>;
+  if (!product) return <p className="p-8">Product not found</p>;
 
-  const picsumId = getPicsumId(Number(id));
+  const title = product.title ?? "Product";
+  const seller = product.sellerUsername ?? "Unknown seller";
+
+  const fallbackUrl = `https://snkkcqsrmsumwgmapxnf.supabase.co/storage/v1/object/public/product-images/no_picture.png`;
+  const imageSrc = product.photo ?? fallbackUrl;
 
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-6 max-w-4xl mx-auto">
@@ -40,15 +56,50 @@ export default function ProductDetails() {
       </button>
 
       <Image
-        src={`https://picsum.photos/id/${picsumId}/600/400`}
-        alt={post.title || "Product image"}
-        width={600}
-        height={400}
+        src={imageSrc}
+        alt={title}
+        width={800}
+        height={600}
         className="rounded-xl mb-6 object-cover w-full"
+        priority
       />
 
-      <h1 className="text-3xl font-bold text-green-800 mb-4">{post.title}</h1>
-      <p className="text-gray-700">{post.body}</p>
+      <div className="flex items-start justify-between gap-4 mb-2">
+        <h1 className="text-3xl font-bold text-green-800">{title}</h1>
+        <div className="text-2xl font-semibold text-gray-900">
+          €{Number(product.price).toFixed(2)}
+        </div>
+      </div>
+
+      <div className="text-sm text-gray-600 flex flex-wrap gap-3 mb-6">
+        <span>
+          Seller: <span className="font-medium">{seller}</span>
+        </span>
+        {product.sort && (
+          <span>
+            • Type: <span className="font-medium">{product.sort}</span>
+          </span>
+        )}
+        {product.location && (
+          <span>
+            • Location: <span className="font-medium">{product.location}</span>
+          </span>
+        )}
+        {product.created_at && (
+          <span>
+            • Posted:{" "}
+            <span className="font-medium">
+              {new Date(product.created_at).toLocaleDateString()}
+            </span>
+          </span>
+        )}
+      </div>
+
+      {product.description ? (
+        <p className="text-gray-700 leading-relaxed">{product.description}</p>
+      ) : (
+        <p className="text-gray-500 italic">No description provided.</p>
+      )}
     </main>
   );
 }
