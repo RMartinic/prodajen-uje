@@ -1,9 +1,26 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ShoppingCart, Menu, X, LogInIcon } from "lucide-react";
+import { supabase } from "../lib/supabaseClient";
+import { Session } from "@supabase/supabase-js";
+import { logOut } from "../middleware/auth";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error(error);
+        return;
+      }
+      setSession(data.session);
+    };
+
+    getSession();
+  }, []);
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -36,13 +53,24 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            className="bg-green-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm"
-          >
-            Log In
-          </Link>
-
+          {!session ? (
+            <Link
+              href="/login"
+              className="bg-green-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm"
+            >
+              Log In
+            </Link>
+          ) : (
+            <button
+              onClick={async () => {
+                await logOut();
+                window.location.reload();
+              }}
+              className="bg-green-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm"
+            >
+              Log Out
+            </button>
+          )}
           <Link
             href="/cart"
             className="flex items-center gap-1 text-gray-700 hover:text-green-600 transition"
@@ -50,6 +78,11 @@ export default function Navbar() {
             <ShoppingCart className="w-5 h-5" />
             <span>Cart</span>
           </Link>
+          {session && (
+            <Link href="/profile" className="hover:text-green-600 transition">
+              My profile
+            </Link>
+          )}
 
           <button className="md:hidden" onClick={() => setOpen(!open)}>
             {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -88,6 +121,15 @@ export default function Navbar() {
             >
               Contact
             </Link>
+            {session && (
+              <Link
+                href="/profile"
+                className="hover:text-green-600 transition"
+                onClick={() => setOpen(false)}
+              >
+                My profile
+              </Link>
+            )}
           </div>
         </div>
       )}

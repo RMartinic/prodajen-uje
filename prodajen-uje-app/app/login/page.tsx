@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { signInWithEmail } from "../middleware/auth";
+import { supabase } from "../lib/supabaseClient";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -9,9 +11,15 @@ export default function LoginPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Login attempt for: " + formData.email);
+
+    try {
+      await signInWithEmail(formData.email, formData.password);
+      window.location.href = "/marketplace";
+    } catch (error: any) {
+      alert(error.message || "Log in failed!");
+    }
   };
 
   return (
@@ -21,12 +29,16 @@ export default function LoginPage() {
           Welcome Back
         </h1>
         <p className="text-gray-600 text-center mb-10">
-          Log in to continue to <span className="font-semibold text-green-700">Prodajen Uje</span>
+          Log in to continue to{" "}
+          <span className="font-semibold text-green-700">Prodajen Uje</span>
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email
             </label>
             <input
@@ -41,7 +53,10 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <input
@@ -66,7 +81,10 @@ export default function LoginPage() {
         <div className="text-center mt-6">
           <p className="text-gray-600 text-sm">
             Don’t have an account?{" "}
-            <Link href="/signup" className="text-green-700 font-medium hover:underline">
+            <Link
+              href="/signup"
+              className="text-green-700 font-medium hover:underline"
+            >
               Sign up
             </Link>
           </p>

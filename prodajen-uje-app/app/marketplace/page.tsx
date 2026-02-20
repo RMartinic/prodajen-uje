@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductCard from "../components/productCard";
 import { fetchProducts, Product } from "../middleware/product";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Marketplace() {
   const [posts, setPosts] = useState<Product[]>([]);
@@ -13,7 +14,9 @@ export default function Marketplace() {
       const data = await fetchProducts();
       setPosts(data);
     };
-
+    supabase.auth.getSession().then(({ data }) => {
+      console.log("SESSION:", data.session);
+    });
     loadPosts();
   }, []);
 
