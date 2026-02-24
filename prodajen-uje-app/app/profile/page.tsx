@@ -10,6 +10,7 @@ import {
   fetchMyOrders,
   fetchMySales,
 } from "../middleware/profile";
+import ProductCard from "../components/productCard";
 
 type Profile = {
   id: string;
@@ -118,20 +119,9 @@ export default function ProfilePage() {
                   <Link
                     key={p.id}
                     href={`/product/${p.id}`}
-                    className="block border rounded-xl p-4 hover:bg-gray-50 transition"
+                    className="transition-transform hover:scale-[1.02]"
                   >
-                    <div className="flex justify-between gap-3">
-                      <div>
-                        <p className="font-semibold line-clamp-1">{p.title}</p>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {p.location}
-                          {p.sort ? ` • ${p.sort}` : ""}
-                        </p>
-                      </div>
-                      <p className="font-semibold">
-                        €{Number(p.price).toFixed(2)}
-                      </p>
-                    </div>
+                    <ProductCard product={p} />
                   </Link>
                 ))
               )}
