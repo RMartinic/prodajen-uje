@@ -5,9 +5,10 @@ import { Product } from "../middleware/product";
 
 type ProductCardProps = {
   product: Product;
+  quantity?: number;
 };
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, quantity }: ProductCardProps) {
   const title = product.title ?? "Product";
   const seller = product.sellerUsername ?? "Unknown seller";
   const createdAt = product.created_at
@@ -55,6 +56,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           <p className="mt-3 text-gray-700 line-clamp-3">
             {product.description}
           </p>
+        )}
+
+        {quantity !== undefined && (
+          <div className="mt-2 text-sm text-gray-700">
+            Quantity: <span className="font-semibold">{quantity}</span>
+          </div>
         )}
 
         <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
