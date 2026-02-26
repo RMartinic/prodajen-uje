@@ -55,14 +55,15 @@ export default function ProductDetails() {
         ← Back to Marketplace
       </button>
 
-      <Image
-        src={imageSrc}
-        alt={title}
-        width={800}
-        height={600}
-        className="rounded-xl mb-6 object-cover w-full"
-        priority
-      />
+      <div className="relative w-[800px] h-[600px]">
+        <Image
+          src={imageSrc}
+          alt={title}
+          fill
+          className="object-cover"
+          unoptimized
+        />
+      </div>
 
       <div className="flex items-start justify-between gap-4 mb-2">
         <h1 className="text-3xl font-bold text-green-800">{title}</h1>

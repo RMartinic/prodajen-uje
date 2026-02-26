@@ -26,6 +26,9 @@ export default function ProductCard({ product, quantity }: ProductCardProps) {
           alt={product.photo ? title : `${title} (placeholder image)`}
           fill
           className="object-cover"
+          unoptimized={imageSrc.startsWith(
+            "https://snkkcqsrmsumwgmapxnf.supabase.co/",
+          )}
           sizes="(max-width: 768px) 100vw, 400px"
         />
       </div>
