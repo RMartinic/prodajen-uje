@@ -119,7 +119,7 @@ export default function ProfilePage() {
                   <Link
                     key={p.id}
                     href={`/product/${p.id}`}
-                    className="transition-transform hover:scale-[1.02]"
+                    className="block transition-transform hover:scale-[1.02] mb-3"
                   >
                     <ProductCard product={p} />
                   </Link>
@@ -138,18 +138,32 @@ export default function ProfilePage() {
               {myOrders.length === 0 ? (
                 <p className="text-sm text-gray-600">No orders yet.</p>
               ) : (
-                myOrders.map((o) => (
-                  <div key={o.id} className="border rounded-xl p-4">
-                    <p className="font-semibold line-clamp-1">
-                      {o.products?.title ?? "Product"}
+                myOrders.map((order) => (
+                  <div
+                    key={order.id}
+                    className="border rounded-xl p-4 hover:bg-green-50 transition-colors"
+                  >
+                    <p className="font-semibold line-clamp-1 text-green-800">
+                      {order.products?.title ?? "Product"}
                     </p>
+
                     <p className="text-xs text-gray-600 mt-1">
-                      {o.status} • qty {o.quantity} • €
-                      {Number(o.total_price).toFixed(2)}
+                      {order.status} • Qty: {order.quantity} • €
+                      {Number(order.total_price).toFixed(2)}
                     </p>
+
                     <p className="text-xs text-gray-500 mt-1">
-                      {new Date(o.created_at).toLocaleString()}
+                      {new Date(order.created_at).toLocaleString("hr-HR")}
                     </p>
+
+                    <div className="mt-3 flex justify-end">
+                      <a
+                        href={`/order/${order.id}`}
+                        className="text-sm bg-green-600 text-white px-4 py-1.5 rounded-lg hover:bg-green-700 transition"
+                      >
+                        View order
+                      </a>
+                    </div>
                   </div>
                 ))
               )}
@@ -167,17 +181,31 @@ export default function ProfilePage() {
                 <p className="text-sm text-gray-600">No sales yet.</p>
               ) : (
                 mySales.map((s) => (
-                  <div key={s.id} className="border rounded-xl p-4">
-                    <p className="font-semibold line-clamp-1">
+                  <div
+                    key={s.id}
+                    className="border rounded-xl p-4 hover:bg-green-50 transition-colors"
+                  >
+                    <p className="font-semibold line-clamp-1 text-green-800">
                       {s.products?.title ?? "Product"}
                     </p>
+
                     <p className="text-xs text-gray-600 mt-1">
                       {s.status} • qty {s.quantity} • €
                       {Number(s.total_price).toFixed(2)}
                     </p>
+
                     <p className="text-xs text-gray-500 mt-1">
-                      {new Date(s.created_at).toLocaleString()}
+                      {new Date(s.created_at).toLocaleString("hr-HR")}
                     </p>
+
+                    <div className="mt-3 flex justify-end">
+                      <a
+                        href={`/order/${s.id}`}
+                        className="text-sm bg-green-600 text-white px-4 py-1.5 rounded-lg hover:bg-green-700 transition"
+                      >
+                        View order
+                      </a>
+                    </div>
                   </div>
                 ))
               )}

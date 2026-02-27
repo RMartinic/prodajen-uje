@@ -7,12 +7,21 @@ import Link from "next/link";
 import ProductCard from "@/app/components/productCard";
 import { loadOrder, type Order } from "../../middleware/order";
 import { loadProduct, Product } from "@/app/middleware/product";
+import { fetchMyProfile } from "@/app/middleware/profile";
 
 export default function OrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  type Profile = {
+    id: string;
+    username: string | null;
+    phone: string | null;
+    created_at: string;
+  };
 
   const [order, setOrder] = useState<Order | null>(null);
+  const [buyerData, setBuyerData] = useState<Profile | null>();
+  const [sellerData, setSellerData] = useState<Profile | null>();
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState<Product | null>(null);
 
@@ -29,12 +38,21 @@ export default function OrderDetailsPage() {
           if (mounted) {
             setOrder(null);
             setProduct(null);
+            setBuyerData(null);
+            setSellerData(null);
           }
           return;
         }
 
         if (!mounted) return;
         setOrder(o);
+        const [buyer, seller] = await Promise.all([
+          fetchMyProfile(o.buyerId),
+          fetchMyProfile(o.sellerId),
+        ]);
+        if (!mounted) return;
+        setBuyerData(buyer);
+        setSellerData(seller);
 
         const p = await loadProduct(o.productId);
         if (!mounted) return;
@@ -44,6 +62,8 @@ export default function OrderDetailsPage() {
         if (mounted) {
           setOrder(null);
           setProduct(null);
+          setBuyerData(null);
+          setSellerData(null);
         }
       } finally {
         if (mounted) setLoading(false);
@@ -113,15 +133,14 @@ export default function OrderDetailsPage() {
               <div className="flex justify-between gap-4">
                 <span>Created</span>
                 <span className="font-semibold">
-                  {new Date(order.createdAt).toLocaleDateString()}
+                  {new Date(order.createdAt).toLocaleString("hr-HR")}
                 </span>
               </div>
             </div>
 
-            {/* optional: ids for debugging / admin */}
             <div className="mt-6 text-xs text-gray-500 space-y-1">
-              <p className="break-all">Buyer: {order.buyerId}</p>
-              <p className="break-all">Seller: {order.sellerId}</p>
+              <p className="break-all">Buyer: {buyerData?.username}</p>
+              <p className="break-all">Seller: {sellerData?.username}</p>
             </div>
           </div>
         </div>

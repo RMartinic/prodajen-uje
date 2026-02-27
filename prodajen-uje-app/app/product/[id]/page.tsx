@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { loadProduct, type Product } from "../../middleware/product";
+import { useCart } from "@/app/providers/CartProvider";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +12,8 @@ export default function ProductDetails() {
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [qty, setQty] = useState(1);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     if (!id) return;
@@ -101,6 +104,55 @@ export default function ProductDetails() {
       ) : (
         <p className="text-gray-500 italic">No description provided.</p>
       )}
+      <div className="mt-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2 border rounded-lg px-2 py-1">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQty((q) => Math.max(1, q - 1));
+            }}
+            className="border rounded-lg px-3 py-1 text-lg hover:bg-gray-300 transition"
+          >
+            −
+          </button>
+
+          <span className="min-w-8 text-center font-medium">{qty}</span>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQty((q) => q + 1);
+            }}
+            className="border rounded-lg px-3 py-1 text-lg hover:bg-gray-300 transition"
+          >
+            +
+          </button>
+        </div>
+
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            addToCart(
+              {
+                id: product.id,
+                title: product.title ?? "Product",
+                price: Number(product.price),
+                photo: product.photo ?? null,
+              },
+              qty,
+            );
+
+            setQty(1);
+          }}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition whitespace-nowrap"
+        >
+          Add to Cart
+        </button>
+      </div>
     </main>
   );
 }

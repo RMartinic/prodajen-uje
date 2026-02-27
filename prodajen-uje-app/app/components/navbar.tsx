@@ -5,9 +5,11 @@ import { ShoppingCart, Menu, X, LogInIcon } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { logOut } from "../middleware/auth";
+import { useCart } from "../providers/CartProvider";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const getSession = async () => {
@@ -76,7 +78,14 @@ export default function Navbar() {
             className="flex items-center gap-1 text-gray-700 hover:text-green-600 transition"
           >
             <ShoppingCart className="w-5 h-5" />
-            <span>Cart</span>
+            <span>
+              Cart
+              {totalItems > 0 && (
+                <span className="relative -top-2 -right-2 bg-green-600 text-white text-xs rounded-full px-2 py-0.5">
+                  {totalItems}
+                </span>
+              )}
+            </span>
           </Link>
           {session && (
             <Link href="/profile" className="hover:text-green-600 transition">
