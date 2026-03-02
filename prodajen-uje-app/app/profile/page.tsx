@@ -85,7 +85,7 @@ export default function ProfilePage() {
 
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="flex items-end justify-between mb-8">
-          <div>
+          <div className="max-w-[50%] sm:max-w-none">
             <h1 className="text-3xl font-bold text-gray-900">My dashboard</h1>
             <p className="text-sm text-gray-600">
               Joined {new Date(profile.created_at).toLocaleDateString()}
@@ -94,7 +94,7 @@ export default function ProfilePage() {
 
           <Link
             href="/sell"
-            className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition shadow-sm"
+            className="mt-9 bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition shadow-sm"
           >
             + New product
           </Link>

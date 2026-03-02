@@ -75,7 +75,7 @@ export default function Navbar() {
           )}
           <Link
             href="/cart"
-            className="flex items-center gap-1 text-gray-700 hover:text-green-600 transition"
+            className="hidden md:flex items-center gap-1 text-gray-700 hover:text-green-600 transition"
           >
             <ShoppingCart className="w-5 h-5" />
             <span>
@@ -88,7 +88,10 @@ export default function Navbar() {
             </span>
           </Link>
           {session && (
-            <Link href="/profile" className="hover:text-green-600 transition">
+            <Link
+              href="/profile"
+              className="hidden md:block text-gray-700 hover:text-green-600 transition font-medium"
+            >
               My profile
             </Link>
           )}
@@ -129,6 +132,21 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
             >
               Contact
+            </Link>
+            <Link
+              href="/cart"
+              className="hover:text-green-600 transition"
+              onClick={() => setOpen(false)}
+            >
+              <ShoppingCart className="w-5 h-5 inline" />
+              <span className="ml-2">
+                Cart
+                {totalItems > 0 && (
+                  <span className="relative -top-2 -right-2 bg-green-600 text-white text-xs rounded-full px-2 py-0.5">
+                    {totalItems}
+                  </span>
+                )}
+              </span>
             </Link>
             {session && (
               <Link

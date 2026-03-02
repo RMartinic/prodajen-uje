@@ -143,3 +143,18 @@ export async function createProduct(input: Product) {
   if (error) throw error;
   return data;
 }
+
+export async function deleteProduct(productId: string) {
+  // (optional) extra safety: ensure user is logged in
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError) throw authError;
+  if (!authData.user) throw new Error("You must be logged in.");
+
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", productId);
+
+  if (error) throw error;
+  return true;
+}
