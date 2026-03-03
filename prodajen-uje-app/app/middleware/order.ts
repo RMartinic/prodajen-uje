@@ -1,5 +1,12 @@
 import { supabase } from "../lib/supabaseClient";
 
+export type OrderStatus =
+  | "pending"
+  | "paid"
+  | "shipped"
+  | "completed"
+  | "cancelled";
+
 export type OrderRow = {
   id: string;
   product_id: string;
@@ -111,4 +118,19 @@ export async function createOrdersFromCart(cartItems: CartItemInput[]) {
   if (insertError) throw insertError;
 
   return createdOrders ?? [];
+}
+export async function updateOrderStatus(orderId: string, status: OrderStatus) {
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError) throw authError;
+  if (!authData.user) throw new Error("You must be logged in.");
+
+  const { data, error } = await supabase
+    .from("orders")
+    .update({ status })
+    .eq("id", orderId)
+    .select("id, status")
+    .single();
+
+  if (error) throw error;
+  return data;
 }

@@ -5,9 +5,14 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
 import ProductCard from "@/app/components/productCard";
-import { loadOrder, type Order } from "../../middleware/order";
+import {
+  loadOrder,
+  updateOrderStatus,
+  type Order,
+} from "../../middleware/order";
 import { loadProduct, Product } from "@/app/middleware/product";
 import { fetchMyProfile } from "@/app/middleware/profile";
+import { supabase } from "@/app/lib/supabaseClient";
 
 export default function OrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -24,6 +29,8 @@ export default function OrderDetailsPage() {
   const [sellerData, setSellerData] = useState<Profile | null>();
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState<Product | null>(null);
+  const [myUserId, setMyUserId] = useState<string | null>(null);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -46,6 +53,7 @@ export default function OrderDetailsPage() {
 
         if (!mounted) return;
         setOrder(o);
+        const myProfileData = await supabase.auth.getUser();
         const [buyer, seller] = await Promise.all([
           fetchMyProfile(o.buyerId),
           fetchMyProfile(o.sellerId),
@@ -53,6 +61,7 @@ export default function OrderDetailsPage() {
         if (!mounted) return;
         setBuyerData(buyer);
         setSellerData(seller);
+        setMyUserId(myProfileData.data.user?.id ?? null);
 
         const p = await loadProduct(o.productId);
         if (!mounted) return;
@@ -76,6 +85,28 @@ export default function OrderDetailsPage() {
       mounted = false;
     };
   }, [id]);
+
+  const isSeller = !!myUserId && myUserId === order?.sellerId;
+  const isBuyer = !!myUserId && myUserId === order?.buyerId;
+
+  const canAccept = isSeller && order.status === "pending";
+  const canShip = isSeller && order.status === "paid";
+  const canComplete = isBuyer && order.status === "shipped";
+  const canCancel =
+    isSeller && (order.status === "pending" || order.status === "paid");
+  const changeStatus = async (
+    nextStatus: "paid" | "shipped" | "completed" | "cancelled",
+  ) => {
+    try {
+      setUpdating(true);
+      await updateOrderStatus(order?.id || "", nextStatus);
+      setOrder((prev) => (prev ? { ...prev, status: nextStatus } : prev));
+    } catch (e: any) {
+      alert(e.message || "Failed to update order");
+    } finally {
+      setUpdating(false);
+    }
+  };
 
   if (loading) return <p className="p-8">Loading...</p>;
   if (!order) return <p className="p-8">Order not found</p>;
@@ -141,6 +172,50 @@ export default function OrderDetailsPage() {
             <div className="mt-6 text-xs text-gray-500 space-y-1">
               <p className="break-all">Buyer: {buyerData?.username}</p>
               <p className="break-all">Seller: {sellerData?.username}</p>
+            </div>
+            <div className="mt-6 space-y-2">
+              {canAccept && (
+                <button
+                  disabled={updating}
+                  onClick={() => changeStatus("paid")}
+                  className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-60"
+                >
+                  Accept order
+                </button>
+              )}
+
+              {canShip && (
+                <button
+                  disabled={updating}
+                  onClick={() => changeStatus("shipped")}
+                  className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-60"
+                >
+                  Mark as shipped
+                </button>
+              )}
+
+              {canComplete && (
+                <button
+                  disabled={updating}
+                  onClick={() => changeStatus("completed")}
+                  className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-60"
+                >
+                  Mark as completed
+                </button>
+              )}
+
+              {canCancel && (
+                <button
+                  disabled={updating}
+                  onClick={() => {
+                    const ok = confirm("Cancel this order?");
+                    if (ok) changeStatus("cancelled");
+                  }}
+                  className="w-full border border-red-300 text-red-700 px-4 py-2 rounded-lg hover:bg-red-50 transition disabled:opacity-60"
+                >
+                  Cancel order
+                </button>
+              )}
             </div>
           </div>
         </div>
