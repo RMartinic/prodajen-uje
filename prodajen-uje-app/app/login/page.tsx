@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { signInWithEmail } from "../middleware/auth";
 import { supabase } from "../lib/supabaseClient";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -13,12 +14,13 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    const loadingId = toast.loading("Logging in...");
     try {
       await signInWithEmail(formData.email, formData.password);
+      toast.success("Logged in ✅", { id: loadingId });
       window.location.href = "/marketplace";
     } catch (error: any) {
-      alert(error.message || "Log in failed!");
+      toast.error(error?.message ?? "Log in failed", { id: loadingId });
     }
   };
 

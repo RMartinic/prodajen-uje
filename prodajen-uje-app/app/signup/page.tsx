@@ -3,6 +3,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { SignUpWithEmail } from "../middleware/auth";
 
+type FieldErrors = {
+  username?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  phone?: string;
+};
+
+const baseInput = "w-full px-4 py-2 border rounded-lg outline-none transition";
+
+const okInput =
+  "border-gray-300 focus:ring-2 focus:ring-green-200 focus:border-green-600";
+
+const badInput = "border-red-500 ring-2 ring-red-200";
+
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
     username: "",
@@ -12,18 +27,53 @@ export default function SignUpPage() {
     phone: "",
   });
 
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [formError, setFormError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFieldErrors((prev) => ({ ...prev, [name]: undefined }));
+    setFormError(null);
+  };
+
+  const validate = (): FieldErrors => {
+    const errors: FieldErrors = {};
+
+    if (!formData.username.trim()) errors.username = "Username is required.";
+
+    if (!formData.email.trim()) errors.email = "Email is required.";
+    else if (!/^\S+@\S+\.\S+$/.test(formData.email))
+      errors.email = "Enter a valid email address.";
+
+    if (!formData.phone.trim()) errors.phone = "Phone number is required.";
+    else if (formData.phone.replace(/\s/g, "").length < 6)
+      errors.phone = "Phone number seems too short.";
+
+    if (!formData.password) errors.password = "Password is required.";
+    else if (formData.password.length < 6)
+      errors.password = "Password must be at least 6 characters.";
+
+    if (!formData.confirmPassword)
+      errors.confirmPassword = "Please confirm your password.";
+    else if (formData.password !== formData.confirmPassword)
+      errors.confirmPassword = "Passwords do not match.";
+
+    return errors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError(null);
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
+    const errors = validate();
+    setFieldErrors(errors);
 
+    if (Object.keys(errors).length > 0) return;
+
+    setLoading(true);
     try {
       await SignUpWithEmail({
         email: formData.email,
@@ -32,8 +82,6 @@ export default function SignUpPage() {
         phone: formData.phone,
       });
 
-      alert(`Account created for: ${formData.username} (${formData.email})`);
-
       setFormData({
         username: "",
         email: "",
@@ -41,8 +89,12 @@ export default function SignUpPage() {
         confirmPassword: "",
         phone: "",
       });
+
+      setFieldErrors({});
     } catch (err: any) {
-      alert(err.message || "Registration failed");
+      setFormError(err.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,99 +111,105 @@ export default function SignUpPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Username
             </label>
             <input
-              id="username"
               name="username"
               type="text"
-              required
               value={formData.username}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              className={`${baseInput} ${
+                fieldErrors.username ? badInput : okInput
+              }`}
             />
+            {fieldErrors.username && (
+              <p className="text-xs text-red-600 mt-1">
+                {fieldErrors.username}
+              </p>
+            )}
           </div>
 
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
             <input
-              id="email"
               name="email"
               type="email"
-              required
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              className={`${baseInput} ${fieldErrors.email ? badInput : okInput}`}
             />
+            {fieldErrors.email && (
+              <p className="text-xs text-red-600 mt-1">{fieldErrors.email}</p>
+            )}
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
             <input
-              id="password"
               name="password"
               type="password"
-              required
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              className={`${baseInput} ${
+                fieldErrors.password ? badInput : okInput
+              }`}
             />
+            {fieldErrors.password && (
+              <p className="text-xs text-red-600 mt-1">
+                {fieldErrors.password}
+              </p>
+            )}
           </div>
 
           <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Confirm Password
             </label>
             <input
-              id="confirmPassword"
               name="confirmPassword"
               type="password"
-              required
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              className={`${baseInput} ${
+                fieldErrors.confirmPassword ? badInput : okInput
+              }`}
             />
+            {fieldErrors.confirmPassword && (
+              <p className="text-xs text-red-600 mt-1">
+                {fieldErrors.confirmPassword}
+              </p>
+            )}
           </div>
+
           <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Phone Number
             </label>
             <input
-              id="phone"
               name="phone"
               type="text"
-              required
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              className={`${baseInput} ${fieldErrors.phone ? badInput : okInput}`}
             />
+            {fieldErrors.phone && (
+              <p className="text-xs text-red-600 mt-1">{fieldErrors.phone}</p>
+            )}
           </div>
+
+          {formError && <p className="text-sm text-red-600">{formError}</p>}
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm"
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm disabled:opacity-60"
           >
-            Sign Up
+            {loading ? "Creating..." : "Sign Up"}
           </button>
         </form>
 

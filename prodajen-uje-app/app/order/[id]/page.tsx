@@ -13,6 +13,7 @@ import {
 import { loadProduct, Product } from "@/app/middleware/product";
 import { fetchMyProfile } from "@/app/middleware/profile";
 import { supabase } from "@/app/lib/supabaseClient";
+import toast from "react-hot-toast";
 
 export default function OrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -97,12 +98,15 @@ export default function OrderDetailsPage() {
   const changeStatus = async (
     nextStatus: "paid" | "shipped" | "completed" | "cancelled",
   ) => {
+    const loadingId = toast.loading("Updating order...");
     try {
       setUpdating(true);
       await updateOrderStatus(order?.id || "", nextStatus);
       setOrder((prev) => (prev ? { ...prev, status: nextStatus } : prev));
+      toast.success("Order updated!", { id: loadingId });
     } catch (e: any) {
-      alert(e.message || "Failed to update order");
+      toast.error(e?.message ?? "Something went wrong", { id: loadingId });
+      throw e;
     } finally {
       setUpdating(false);
     }
@@ -121,19 +125,17 @@ export default function OrderDetailsPage() {
           >
             ← Back to Profile
           </button>
-
-          <Link
-            href={`/product/${order.productId}`}
-            className="text-green-700 hover:text-green-800 font-medium"
-          >
-            View product →
-          </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             {product ? (
-              <ProductCard product={product} quantity={order.quantity} />
+              <Link
+                href={`/product/${order.productId}`}
+                className="text-green-700 hover:text-green-800 font-medium"
+              >
+                <ProductCard product={product} quantity={order.quantity} />
+              </Link>
             ) : (
               <span>"No products in order"</span>
             )}

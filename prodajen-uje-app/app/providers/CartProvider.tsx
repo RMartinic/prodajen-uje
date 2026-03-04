@@ -9,7 +9,7 @@ import React, {
 } from "react";
 
 export type CartItem = {
-  id: string; // product id
+  id: string;
   title: string;
   price: number;
   photo: string | null;
@@ -105,13 +105,10 @@ const CartContext = createContext<CartContextValue | null>(null);
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, undefined, loadInitialCart);
 
-  // Persist to localStorage
   useEffect(() => {
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state));
-    } catch {
-      // ignore
-    }
+    } catch {}
   }, [state]);
 
   const totalItems = useMemo(

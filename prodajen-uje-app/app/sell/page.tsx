@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { createProduct, uploadProductImage } from "../middleware/product";
 import { supabase } from "../lib/supabaseClient";
+import toast from "react-hot-toast";
 
 export default function SellPage() {
   const [title, setTitle] = useState("");
@@ -19,6 +20,11 @@ export default function SellPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{
+    title?: string;
+    price?: string;
+    location?: string;
+  }>({});
 
   const onPickFile = (f: File | null) => {
     setFile(f);
@@ -52,13 +58,26 @@ export default function SellPage() {
     e.preventDefault();
     setError(null);
 
-    if (!title.trim()) return setError("Title is required.");
-    if (!location.trim()) return setError("Location is required.");
+    const nextErrors: typeof fieldErrors = {};
+
+    if (!title.trim()) nextErrors.title = "Title is required.";
+    if (!location.trim()) nextErrors.location = "Location is required.";
+
     const numericPrice = Number(price);
-    if (!Number.isFinite(numericPrice) || numericPrice <= 0) {
-      return setError("Price must be a positive number.");
+    if (!price.trim()) nextErrors.price = "Price is required.";
+    else if (!Number.isFinite(numericPrice) || numericPrice <= 0) {
+      nextErrors.price = "Price must be a positive number.";
     }
+
+    setFieldErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      toast.error("Please fix the highlighted fields.");
+      return;
+    }
+
     setLoading(true);
+    const toastId = toast.loading("Uploading product...");
     try {
       let photoUrl: string | null = null;
       if (file) {
@@ -79,8 +98,9 @@ export default function SellPage() {
       });
 
       window.location.href = `/product/${created.id}`;
+      toast.success("Product uploaded successfully.", { id: toastId });
     } catch (err: any) {
-      setError(err.message ?? "Failed to create product.");
+      toast.error(err.message || "Error uploading product.", { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -133,16 +153,28 @@ export default function SellPage() {
                   />
                 </div>
               ) : (
-                <div className="w-full h-56 rounded-xl border bg-gray-50 flex items-center justify-center text-gray-500 mb-3">
+                <div className="w-full h-56 rounded-xl border bg-gray-150 flex items-center justify-center text-gray-500 mb-3">
                   No photo selected
                 </div>
               )}
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
-              />
+              <div className="flex items-center gap-3">
+                <label className="cursor-pointer bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition shadow-sm">
+                  Choose image
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
+                  />
+                </label>
+
+                {file && (
+                  <span className="text-sm text-gray-600 truncate max-w-[180px]">
+                    {file.name}
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-gray-500 mt-1">
                 JPG/PNG/WebP up to ~3MB.
               </p>
@@ -154,10 +186,18 @@ export default function SellPage() {
               </label>
               <input
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  setFieldErrors((prev) => ({ ...prev, title: undefined }));
+                }}
+                className={`w-full border rounded-lg px-3 py-2 outline-none transition
+    ${fieldErrors.title ? "border-red-500 ring-2 ring-red-200" : "border-gray-300 focus:ring-2 focus:ring-green-200 focus:border-green-500"}
+  `}
                 placeholder="e.g. Extra virgin olive oil 1L"
               />
+              {fieldErrors.title && (
+                <p className="text-xs text-red-600 mt-1">{fieldErrors.title}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -165,11 +205,19 @@ export default function SellPage() {
               </label>
               <input
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2"
+                onChange={(e) => {
+                  setPrice(e.target.value);
+                  setFieldErrors((prev) => ({ ...prev, price: undefined }));
+                }}
+                className={`w-full border rounded-lg px-3 py-2 outline-none transition
+    ${fieldErrors.price ? "border-red-500 ring-2 ring-red-200" : "border-gray-300 focus:ring-2 focus:ring-green-200 focus:border-green-500"}
+  `}
                 placeholder="e.g. 15.00"
                 inputMode="decimal"
               />
+              {fieldErrors.price && (
+                <p className="text-xs text-red-600 mt-1">{fieldErrors.price}</p>
+              )}
             </div>
 
             <div>
@@ -178,10 +226,20 @@ export default function SellPage() {
               </label>
               <input
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2"
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                  setFieldErrors((prev) => ({ ...prev, location: undefined }));
+                }}
+                className={`w-full border rounded-lg px-3 py-2 outline-none transition
+    ${fieldErrors.location ? "border-red-500 ring-2 ring-red-200" : "border-gray-300 focus:ring-2 focus:ring-green-200 focus:border-green-500"}
+  `}
                 placeholder="e.g. Šolta"
               />
+              {fieldErrors.location && (
+                <p className="text-xs text-red-600 mt-1">
+                  {fieldErrors.location}
+                </p>
+              )}
             </div>
 
             <div>

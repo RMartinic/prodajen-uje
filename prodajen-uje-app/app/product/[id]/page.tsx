@@ -10,6 +10,7 @@ import {
 } from "../../middleware/product";
 import { useCart } from "@/app/providers/CartProvider";
 import { supabase } from "@/app/lib/supabaseClient";
+import toast from "react-hot-toast";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -151,13 +152,16 @@ export default function ProductDetails() {
 
                 const ok = confirm("Delete this product?");
                 if (!ok) return;
-
+                const loadingId = toast.loading("Deleting product...");
                 try {
                   setDeleting(true);
                   await deleteProduct(product.id);
+                  toast.success("Product deleted", { id: loadingId });
                   window.location.reload();
                 } catch (err: any) {
-                  alert(err.message || "Delete failed");
+                  toast.error(err?.message ?? "Error deleting product", {
+                    id: loadingId,
+                  });
                 } finally {
                   setDeleting(false);
                 }
@@ -184,6 +188,7 @@ export default function ProductDetails() {
                   },
                   qty,
                 );
+                toast.success("Added to cart!");
 
                 setQty(1);
               }}

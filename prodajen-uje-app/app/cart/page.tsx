@@ -6,6 +6,7 @@ import type { Product } from "../middleware/product";
 import { createOrdersFromCart } from "../middleware/order";
 import { useEffect, useState } from "react";
 import { getMyUserId } from "../middleware/profile";
+import toast from "react-hot-toast";
 
 export default function CartPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -49,31 +50,35 @@ export default function CartPage() {
               return (
                 <div key={i.id} className="space-y-3">
                   <ProductCard product={productForCard} quantity={i.quantity} />
-                  <div className="bg-white border rounded-xl p-4 flex items-center gap-3">
+                  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 flex items-center gap-3">
                     <button
-                      className="border rounded-lg px-3 py-1"
+                      className="border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-1
+               text-gray-900 dark:text-gray-100
+               hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                       onClick={() => decrease(i.id)}
                     >
                       −
                     </button>
 
-                    <span className="min-w-8 text-center font-medium">
+                    <span className="min-w-8 text-center font-medium text-gray-900 dark:text-gray-100">
                       {i.quantity}
                     </span>
 
                     <button
-                      className="border rounded-lg px-3 py-1"
+                      className="border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-1
+               text-gray-900 dark:text-gray-100
+               hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                       onClick={() => increase(i.id)}
                     >
                       +
                     </button>
 
-                    <div className="ml-auto font-semibold">
+                    <div className="ml-auto font-semibold text-gray-900 dark:text-gray-100">
                       €{(i.price * i.quantity).toFixed(2)}
                     </div>
 
                     <button
-                      className="ml-4 text-red-600 hover:underline"
+                      className="ml-4 text-red-600 dark:text-red-400 hover:underline"
                       onClick={() => removeFromCart(i.id)}
                     >
                       Remove
@@ -83,15 +88,25 @@ export default function CartPage() {
               );
             })}
 
-            <div className="bg-white border rounded-2xl p-4 flex items-center justify-between">
-              <p className="font-semibold">Total</p>
-              <p className="font-bold text-lg">€{totalPrice.toFixed(2)}</p>
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-4 flex items-center justify-between">
+              <p className="font-semibold text-gray-900 dark:text-gray-100">
+                Total
+              </p>
+              <p className="font-bold text-lg text-gray-900 dark:text-gray-100">
+                €{totalPrice.toFixed(2)}
+              </p>
             </div>
 
-            <div className="flex gap-3">
-              <button className="border rounded-lg px-4 py-2" onClick={clear}>
+            <div className="flex flex-wrap gap-3">
+              <button
+                className="border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2
+               text-gray-900 dark:text-gray-800
+               hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                onClick={clear}
+              >
                 Clear cart
               </button>
+
               <button
                 className="bg-green-600 text-white rounded-lg px-4 py-2 hover:bg-green-700 transition"
                 onClick={async () => {
@@ -99,6 +114,7 @@ export default function CartPage() {
                     window.location.href = "/login";
                     return;
                   }
+                  const loadingId = toast.loading("Ordering olive oil...");
 
                   try {
                     const payload = items.map((i) => ({
@@ -112,12 +128,17 @@ export default function CartPage() {
                     clear();
 
                     if (created[0]?.id) {
+                      toast.success("Order made ✅", { id: loadingId });
                       window.location.href = `/order/${created[0].id}`;
                     } else {
+                      toast.success("Order made ✅", { id: loadingId });
                       window.location.href = "/profile";
                     }
                   } catch (e: any) {
-                    alert(e.message || "Checkout failed");
+                    toast.error(e?.message ?? "Something went wrong", {
+                      id: loadingId,
+                    });
+                    throw e;
                   }
                 }}
               >

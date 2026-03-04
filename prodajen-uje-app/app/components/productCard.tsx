@@ -19,7 +19,7 @@ export default function ProductCard({ product, quantity }: ProductCardProps) {
   const imageSrc = product.photo ?? fallbackUrl;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition">
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col h-full">
       <div className="relative w-full h-56">
         <Image
           src={imageSrc}
@@ -33,7 +33,7 @@ export default function ProductCard({ product, quantity }: ProductCardProps) {
         />
       </div>
 
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-grow">
         <div className="flex items-start justify-between gap-3">
           <h2 className="text-xl font-semibold text-green-800">{title}</h2>
           <div className="text-lg font-semibold text-gray-900">
@@ -67,7 +67,7 @@ export default function ProductCard({ product, quantity }: ProductCardProps) {
           </div>
         )}
 
-        <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+        <button className="mt-auto bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
           View Product
         </button>
       </div>
