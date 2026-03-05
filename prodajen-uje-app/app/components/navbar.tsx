@@ -70,7 +70,24 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          {/* login/logout button unchanged, just add dark-friendly shadow if you want */}
+          {!session ? (
+            <Link
+              href="/login"
+              className="bg-green-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm"
+            >
+              Log In
+            </Link>
+          ) : (
+            <button
+              onClick={async () => {
+                await logOut();
+                window.location.reload();
+              }}
+              className="bg-green-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm"
+            >
+              Log Out
+            </button>
+          )}
 
           <Link
             href="/cart"

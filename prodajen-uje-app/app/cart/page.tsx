@@ -7,6 +7,7 @@ import { createOrdersFromCart } from "../middleware/order";
 import { useEffect, useState } from "react";
 import { getMyUserId } from "../middleware/profile";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function CartPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -49,8 +50,17 @@ export default function CartPage() {
 
               return (
                 <div key={i.id} className="space-y-3">
-                  <ProductCard product={productForCard} quantity={i.quantity} />
-                  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 flex items-center gap-3">
+                  <Link
+                    key={productForCard.id}
+                    href={`/product/${productForCard.id}`}
+                    className="transition-transform hover:scale-[1.02]"
+                  >
+                    <ProductCard
+                      product={productForCard}
+                      quantity={i.quantity}
+                    />
+                  </Link>
+                  <div className="bg-white mt-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 flex items-center gap-3">
                     <button
                       className="border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-1
                text-gray-900 dark:text-gray-100

@@ -101,9 +101,11 @@ export default function ProfilePage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
-            <div className="px-5 py-4 border-b">
-              <h2 className="text-lg font-bold">My products</h2>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-800">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                My products
+              </h2>
               <p className="text-sm text-gray-600">
                 {myProducts.length} listed
               </p>
@@ -128,10 +130,15 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
-            <div className="px-5 py-4 border-b">
-              <h2 className="text-lg font-bold">My orders</h2>
-              <p className="text-sm text-gray-600">{myOrders.length} total</p>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-800">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                My orders
+              </h2>
+
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {myOrders.length} total
+              </p>
             </div>
 
             <div className="p-4 space-y-3 max-h-[70vh] overflow-auto">
@@ -170,9 +177,11 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
-            <div className="px-5 py-4 border-b">
-              <h2 className="text-lg font-bold">My sales</h2>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-800">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                My sales
+              </h2>
               <p className="text-sm text-gray-600">{mySales.length} total</p>
             </div>
 

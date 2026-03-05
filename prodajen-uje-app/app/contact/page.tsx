@@ -1,17 +1,24 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for reaching out! We'll get back to you soon."); // Placeholder — later connect to backend or API
+    toast.success("Thank you for reaching out! We'll get back to you soon.");
     setFormData({ name: "", email: "", message: "" });
   };
 
@@ -27,7 +34,7 @@ export default function ContactPage() {
         />
       </section>
 
-      <div className="text-center -mt-10 mb-12">
+      <div className="text-center -mt-10">
         <h1 className="inline-block bg-white/80 backdrop-blur-sm px-8 py-3 rounded-lg shadow-md text-4xl md:text-5xl font-bold text-green-700">
           Contact Prodajen Uje
         </h1>
@@ -35,9 +42,10 @@ export default function ContactPage() {
 
       <section className="max-w-3xl mx-auto px-6 py-10 text-gray-800">
         <p className="text-lg text-center mb-10 leading-relaxed">
-          We’d love to hear from you — whether you’re a local olive grower having interest in 
-           <strong> Prodajen Uje</strong>, or a customer who values fair, eco-friendly
-          olive oil. Reach out and let’s grow together!
+          We’d love to hear from you — whether you’re a local olive grower
+          having interest in
+          <strong> Prodajen Uje</strong>, or a customer who values fair,
+          eco-friendly olive oil. Reach out and let’s grow together!
         </p>
 
         <form
@@ -45,7 +53,10 @@ export default function ContactPage() {
           className="bg-white shadow-md rounded-2xl p-8 space-y-6 border border-gray-100"
         >
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Name
             </label>
             <input
@@ -60,7 +71,10 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email
             </label>
             <input
@@ -75,7 +89,10 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="message"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Message
             </label>
             <textarea

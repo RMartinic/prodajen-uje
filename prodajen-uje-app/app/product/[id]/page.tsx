@@ -117,19 +117,23 @@ export default function ProductDetails() {
         <p className="text-gray-500 italic">No description provided.</p>
       )}
       <div className="mt-4 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2 border rounded-lg px-2 py-1">
+        <div className="flex items-center gap-2 border border-gray-300 dark:border-gray-700 rounded-lg px-2 py-1 bg-white dark:bg-gray-900">
           <button
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               setQty((q) => Math.max(1, q - 1));
             }}
-            className="border rounded-lg px-3 py-1 text-lg hover:bg-gray-300 transition"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-1 text-lg 
+               text-gray-900 dark:text-gray-100
+               hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             −
           </button>
 
-          <span className="min-w-8 text-center font-medium">{qty}</span>
+          <span className="min-w-8 text-center font-medium text-gray-900 dark:text-gray-100">
+            {qty}
+          </span>
 
           <button
             onClick={(e) => {
@@ -137,7 +141,9 @@ export default function ProductDetails() {
               e.stopPropagation();
               setQty((q) => q + 1);
             }}
-            className="border rounded-lg px-3 py-1 text-lg hover:bg-gray-300 transition"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-1 text-lg 
+               text-gray-900 dark:text-gray-100
+               hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             +
           </button>
