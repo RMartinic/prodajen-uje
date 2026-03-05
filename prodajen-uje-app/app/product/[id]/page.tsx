@@ -152,25 +152,55 @@ export default function ProductDetails() {
         <div className="flex items-center gap-2">
           {isOwner && (
             <button
-              onClick={async (e) => {
+              onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
 
-                const ok = confirm("Delete this product?");
-                if (!ok) return;
-                const loadingId = toast.loading("Deleting product...");
-                try {
-                  setDeleting(true);
-                  await deleteProduct(product.id);
-                  toast.success("Product deleted", { id: loadingId });
-                  window.location.reload();
-                } catch (err: any) {
-                  toast.error(err?.message ?? "Error deleting product", {
-                    id: loadingId,
-                  });
-                } finally {
-                  setDeleting(false);
-                }
+                toast((t) => (
+                  <div className="flex flex-col gap-3">
+                    <span className="font-medium text-red-600">
+                      Delete this product?
+                    </span>
+
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        className="px-3 py-1 text-sm border rounded-lg hover:bg-gray-100"
+                        onClick={() => toast.dismiss(t.id)}
+                      >
+                        Cancel
+                      </button>
+
+                      <button
+                        className="px-3 py-1 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700"
+                        onClick={async () => {
+                          toast.dismiss(t.id);
+
+                          const loadingId = toast.loading(
+                            "Deleting product...",
+                          );
+                          try {
+                            setDeleting(true);
+                            await deleteProduct(product.id);
+
+                            toast.success("Product deleted", { id: loadingId });
+                            window.location.reload();
+                          } catch (err: any) {
+                            toast.error(
+                              err?.message ?? "Error deleting product",
+                              {
+                                id: loadingId,
+                              },
+                            );
+                          } finally {
+                            setDeleting(false);
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ));
               }}
               disabled={deleting}
               className="border border-red-300 text-red-700 px-3 py-2 rounded-lg hover:bg-red-200 transition disabled:opacity-60"

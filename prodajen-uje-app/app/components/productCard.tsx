@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Product } from "../middleware/product";
+const fallbackUrl = process.env.NEXT_PUBLIC_FALLBACK_URL || "";
 
 type ProductCardProps = {
   product: Product;
@@ -15,7 +16,6 @@ export default function ProductCard({ product, quantity }: ProductCardProps) {
     ? new Date(product.created_at).toLocaleDateString()
     : "";
 
-  const fallbackUrl = `https://snkkcqsrmsumwgmapxnf.supabase.co/storage/v1/object/public/product-images/no_picture.png`;
   const imageSrc = product.photo ?? fallbackUrl;
 
   return (
