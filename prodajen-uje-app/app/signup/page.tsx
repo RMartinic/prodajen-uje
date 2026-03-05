@@ -93,6 +93,9 @@ export default function SignUpPage() {
       setFieldErrors({});
     } catch (err: any) {
       setFormError(err.message || "Registration failed");
+      if (err.code === "23505") {
+        setFormError("Username is already taken. Please choose another.");
+      }
     } finally {
       setLoading(false);
     }
