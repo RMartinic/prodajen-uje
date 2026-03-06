@@ -24,8 +24,8 @@
 ## My Project Links
 
 ###  Semester Project
-- **Production Version**: [Production Version](#)  
-- **Final Report**: [Final Report](#)
+- **Production Version**: [Production Version](https://prodajen-uje.vercel.app/)  
+- **Final Report**: [Final Report](/docs/README.md)
 
 ---
 
@@ -34,7 +34,8 @@
 - Link to Assignment 1: [**Idea Pitch**](/assignments/idea-pitch/)
 - Link to Assignment 2: [**User Personas**](/assignments/user-personas/)
 - Link to Assignment 3: [**Next.js - Deploying Application**](https://prodajen-uje.vercel.app/)
-- Link to Assignment 4: [**Next.js - Dynamic routes, data fetching**](https://prodajen-uje.vercel.app/)
+- Link to Assignment 4: [**Low/High-fidelity prototype**](/assignments/low-high-fidelity-prototype)
+- Link to Assignment 5: [**Next.js - Dynamic routes, data fetching**](https://prodajen-uje.vercel.app/)
 ---
 
 ## Project Requirements
