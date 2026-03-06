@@ -24,8 +24,8 @@
 ## My Project Links
 
 ###  Semester Project
-- **Production Version**: [Production Version](#)  
-- **Final Report**: [Final Report](#)
+- **Production Version**: [Production Version](https://prodajen-uje.vercel.app/)  
+- **Final Report**: [Final Report](/docs/README.md)
 
 ---
 
