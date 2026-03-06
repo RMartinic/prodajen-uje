@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SignUpWithEmail } from "../middleware/auth";
+import toast from "react-hot-toast";
 
 type FieldErrors = {
   username?: string;
@@ -89,7 +90,8 @@ export default function SignUpPage() {
         confirmPassword: "",
         phone: "",
       });
-
+      toast.success("Account successfully created!");
+      window.location.href = "/marketplace";
       setFieldErrors({});
     } catch (err: any) {
       setFormError(err.message || "Registration failed");

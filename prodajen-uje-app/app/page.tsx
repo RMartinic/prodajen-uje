@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const loadPosts = async () => {
       const data = await fetchProducts();
-      setPosts(data);
+      setPosts(data.slice(0, 3));
     };
     loadPosts();
   }, []);
