@@ -116,7 +116,9 @@ This is a Next.js-based marketplace web application designed for buying and sell
 - Custom error handling and validation
 - Responsive design for mobile and desktop
 - Dark mode support
-- Development Tools
+
+  **Development Tools**
+  
 - Node.js: Runtime environment for the project.
 - npm: Dependency and package management.
 - Git: Version control system.
